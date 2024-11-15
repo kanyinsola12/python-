@@ -1,0 +1,73 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.datasets import load_iris
+
+# Load the Iris dataset
+iris = load_iris()
+data = pd.DataFrame(data=iris.data, columns=iris.feature_names)
+data['species'] = pd.Categorical.from_codes(iris.target, iris.target_names)
+
+# Display the first few rows of the dataset
+print("First few rows of the dataset:")
+print(data.head())
+
+# Explore the structure of the dataset
+print("\nData types and missing values:")
+print(data.info())
+
+# No missing values in the Iris dataset, so no need to clean
+
+# Basic Data Analysis
+# Compute basic statistics
+print("\nBasic statistics of numerical columns:")
+print(data.describe())
+
+# Grouping and computing means
+grouped_data = data.groupby('species').mean()
+print("\nMean of features for each species:")
+print(grouped_data)
+
+# Data Visualization
+# Line chart showing trends over time (though Iris data is not time-based, let's illustrate using sepal length and width)
+plt.figure(figsize=(10, 6))
+for species in data['species'].unique():
+    subset = data[data['species'] == species]
+    plt.plot(subset['sepal length (cm)'], subset['sepal width (cm)'], label=species)
+
+plt.title('Sepal Length vs Sepal Width')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.legend()
+plt.show()
+
+# Bar chart showing comparison across species
+plt.figure(figsize=(10, 6))
+sns.barplot(x='species', y='sepal length (cm)', data=data)
+plt.title('Average Sepal Length per Species')
+plt.xlabel('Species')
+plt.ylabel('Average Sepal Length (cm)')
+plt.show()
+
+# Histogram of a numerical column
+plt.figure(figsize=(10, 6))
+plt.hist(data['sepal length (cm)'], bins=30)
+plt.title('Distribution of Sepal Length')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Frequency')
+plt.show()
+
+# Scatter plot to visualize relationship between two numerical columns
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='sepal length (cm)', y='petal length (cm)', hue='species', data=data)
+plt.title('Scatter Plot of Sepal Length vs Petal Length')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Petal Length (cm)')
+plt.show()
+
+# Findings and Observations
+print("\nFindings and Observations:")
+print("1. Sepal length varies significantly across different species.")
+print("2. There is a positive correlation between sepal length and petal length.")
+# Continue with your detailed observations
